@@ -1,6 +1,7 @@
 # pan-Zea-utilities
 
 - [pan-Zea-utilities](#pan-zea-utilities)
+  - [Introduction](#introduction)
   - [Prerequisites](#prerequisites)
     - [Runtime environment:](#runtime-environment)
     - [Dependencies](#dependencies)
@@ -21,6 +22,7 @@
       - [PANZ_regional_enrich.sh](#panz_regional_enrichsh)
   - [Citations](#citations)
 
+## Introduction
 This repository collected the miscellaneous analysis scripts used in the research of pan-Zea genome and genetics.
 
 Class | Script_name | Descriptions

@@ -1,5 +1,26 @@
 # pan-Zea-utilities
 
+- [pan-Zea-utilities](#pan-zea-utilities)
+  - [Prerequisites](#prerequisites)
+    - [Runtime environment:](#runtime-environment)
+    - [Dependencies](#dependencies)
+  - [Detailed usage](#detailed-usage)
+    - [Genetic](#genetic)
+      - [PANZ_SVflankSNP_LD.sh and SV_LD_type_draw.r](#panz_svflanksnp_ldsh-and-sv_ld_type_drawr)
+      - [PANZ_QTL_FineMap.sh](#panz_qtl_finemapsh)
+      - [PANZ_part_h2.sh](#panz_part_h2sh)
+      - [PANZ_MAGMA.sh](#panz_magmash)
+    - [Genomic](#genomic)
+      - [PANZ_determine_core_dispensable.sh](#panz_determine_core_dispensablesh)
+      - [PANZ_SubG_PAV.sh](#panz_subg_pavsh)
+      - [PANZ_gene_age.sh](#panz_gene_agesh)
+      - [PANZ_SV_Annotation.sh](#panz_sv_annotationsh)
+    - [Statistic](#statistic)
+      - [PANZ_freq_enrich.sh](#panz_freq_enrichsh)
+      - [PANZ_rankINT.sh](#panz_rankintsh)
+      - [PANZ_regional_enrich.sh](#panz_regional_enrichsh)
+  - [Citations](#citations)
+
 This repository collected the miscellaneous analysis scripts used in the research of pan-Zea genome and genetics.
 
 Class | Script_name | Descriptions

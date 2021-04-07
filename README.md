@@ -110,8 +110,8 @@ Note:
     needs these software in PATH to run the pipeline:
     GNU parallel; bcftools; Rscript; vcftools; csvtk;
 ------------------------------------------------------------
-Author: Songtao Gui
-E-mail: songtaogui@sina.com
+
+
 ```
 
 - SV_LD_type_draw.r
@@ -225,63 +225,55 @@ OPTIONS: ([R]:required  [O]:optional)
     --tar                       [O]     tar intermediate dirs if set. (default: do not tar intermediate dirs)
 
 ------------------------------------------------------------
-Author: Songtao Gui
-E-mail: songtaogui@sina.com
+
+
 ```
 
 #### PANZ_part_h2.sh
 
 ```sh
 ------------------------------------------------------------
-Identify QTLs and perform statistical fine mapping for PANZ
+Partition genetic variants and calculate variant heritability
+using GWAS Summary Statistic.
+This is a wrapper of LDAK pipelines.
 ------------------------------------------------------------
-Dependence:csvtk perl HARVESTER DAP-G
+Dependence: LDAK plink csvtk parallel bedtools bgzip perl5
 ------------------------------------------------------------
 USAGE:
-
+    bash $(basename $0) [OPTIONS]
 
 OPTIONS: ([R]:required  [O]:optional)
     -h, --help                          show help and exit.
     -t, --threads       <num>   [O]     set threads (default: 2)
-
-# I/O:
-    -o, --out           <str>   [O]     Output prefix, will create a dir with this string in the current path,
-                                    so make sure the dir does not exist (default: PANZ_FineMap_Out)
-    -v, --gvcf          <str>   [R]     input gvcf file (should be indexed).
-    --trait             <str>   [R]     input trait file name, make sure the file was named as "trait_name.prefix",
-                                    File Format (TSV format, the key word "<trait>" is needed):
-                                        <trait>    trait_name
-    --covar             <str>   [R]     Input quantitative covariates from a plain text file in format (TSV):
-                                        <covar>    covar_ID
-                                        sample1        1.0
-                                        sample2        2.5
-    --gwas              <str>   [R]     gwas file.tsv[.gz] with header( header could be any string),
-                                    should contain columns of:
-                                        variant_ID, chr, start, end, p-value, effect size
-    --info_cols         <str>   [R]     a set of numbers seperated by comma to indicate the column of
-                                    [variant_ID, chr, start, end, p-value, effect size] in the gwas file, for example,
-                                    if your gwas file looks like this:
-                                        Chr    start0    End    variant_ID    p-value    beta
-                                        1       1234    1235    SNP01         1E-7      0.22
-                                    you should set this option as "4,1,2,3,5,6"
-
-# gwas peak calling
-    --min_peak_logP     <int>   [O]     the minimum -log(P-value) of the peak to keep. (default: 5)
-    --inlimit           <int>   [O]     the minimum p-value of the variant to include in a peak region. (default: 0.001)
-    --flank             <int>   [O]     flanking length (in bp) of peak to include as final peak region. (default: 10000)
-    --min_count         <int>   [O]     the minimum No. of variants that passed the --inlimit cutoff within a peak. (default: 3)
-
-# fine mapping (Bayes)
-    --ld_control        <0-1>   [O]     r^2 threshold within a signal cluster (default: 0.25)
-    --credible_prob     <0-1>   [O]     Prob of credible set (default: 0.95)
-
-# Miscellaneous
-    --tissue            <str>   [O]     tissue id of the trait that used in the final annotation vcf file.(default: kernel)
-    --tar                       [O]     tar intermediate dirs if set. (default: do not tar intermediate dirs)
-
+# I/O
+    -v, --gvcf          <str>   [R]     bgzipped and index vcf file. SHOULD BE ABSOLUTE PATH.
+    -p, --pheno         <str>   [R]     plink format pheno file. SHOULD BE ABSOLUTE PATH.
+    --pheno_tag         <str>   [R]     A string tagging the pheno file (e.g. "Cob_color"), used to generate different reml outputs, in order to multiple-run of several phenotypes based on same gvcf files.
+    -c, --covar         <str>   [R]     covar file in plink format. SHOULD BE ABSOLUTE PATH.
+    -o, --out           <str>   [O]     output prefix (default: PANZ)
+# mode
+    --part_tsv          <str>   [O]     ABSOLUTE path of the files included Variant IDs and patition rules, will create a dir based on the prefix of this file.
+                                    format (With header, header of Col1 must be VID, header of other cols would be used as feature tag in output. Mark excluded data with "NA"):
+                                        VID        Annotations     MAF_Bins
+                                        SNP1          CDS_SNPs     MAF0-0d05
+                                        SNP2   INTERGENIC_SNPS     MAF0d05-0d1
+                                        SNP3          CDS_SNPS     NA
+    --part_bed          <str>   [O]     ABSOLUTE path of the bed files if you would like to estimatie the patition h2 by regions, will create a dir based on the prefix of this file.
+                                    format (UCSC bed format, no header):
+                                        <chr>   <start0>    <end>   <Feature_ID>
+                                        1       12345       13456   TE_Rich_Region1
+                                        2       22345       33456   Gene_Rich_Region1
+                                        3       32345       43456   TE_Rich_Region1
+# prune & keep
+    --keep                      [O]     Keep only unrelated individuals for h2 estimation. (default: off, that is use all individuals provided)
+    --window_kb         <int>   [O]     Window size to compute allelic correlations to thin variants.(default:1000)
+    --window_prune      <0-1>   [O]     Max correlation squared cut-off to thin variants. (default: 0.2)
+# PCA
+    --PCA                       [O]     Use PCs as additional covar, that is, if --covar was provided, will combine --covar with PCs as a final covar file.
+    --axes              <int>   [O]    Along with --PCA, set number of PCs to keep in the PCA of kept individuals by pruned variants, and add PCs as covar. (default: 20)
+# OTHERs
+    --constrain                 [O]     By default, LDAK will not restrict heritability estimates to be within [0,1]. This is generally our preference, as to obtain unbiased estimates of heritabilities near zero, it is necessary to accept the possibility of negative estimates. Set this option will force all heritability estimates within [0,1].
 ------------------------------------------------------------
-Author: Songtao Gui
-E-mail: songtaogui@sina.com
 ```
 
 #### PANZ_MAGMA.sh
@@ -317,8 +309,8 @@ OPTIONS: ([R]:required  [O]:optional)
     -o, --out           <str>   [O]     Output prefix, will create a dir accordingly for the outputs (default: PANZ_Gene_GWAS_out)
 
 ------------------------------------------------------------
-Author: Songtao Gui
-E-mail: songtaogui@sina.com
+
+
 ```
 
 ### Genomic
@@ -349,8 +341,8 @@ OPTIONS: ([R]:required  [O]:optional)
     --prefix         <str>    [O]    prefix tag of output gene types (default: PANZ)
     -t, --threads    <num>    [O]    set threads (default: 2)
 ------------------------------------------------------------
-Author: Songtao Gui
-E-mail: songtaogui@sina.com
+
+
 ```
 
 #### PANZ_SubG_PAV.sh
@@ -384,8 +376,8 @@ OPTIONS: ([R]:required  [O]:optional)
     -o,--output      <str>    [O]    output file (default: PAV_subgroup_unbalanced_out.tsv)
     -t, --threads    <num>    [O]    set threads (default: 2)
 ------------------------------------------------------------
-Author: Songtao Gui
-E-mail: songtaogui@sina.com
+
+
 
 ```
 
@@ -427,8 +419,8 @@ OPTIONS: ([R]:required  [O]:optional)
     --identity       <0-1>    [O]    Identity cut-off of the blastp output (Default 0.3)
     -t, --threads    <num>    [O]    set threads (default: 2)
 ------------------------------------------------------------
-Author: Songtao Gui
-E-mail: songtaogui@sina.com
+
+
 ```
 
 #### PANZ_SV_Annotation.sh
@@ -450,8 +442,8 @@ OPTIONS:
     6. Threads
     7. output_name
 ------------------------------------------------------------
-Author: Songtao Gui
-E-mail: songtaogui@sina.com
+
+
 ```
 
 ### Statistic
@@ -483,8 +475,8 @@ OPTIONS: ([R]:required  [O]:optional)
 Output format:
     <Item>  <Type>  <ratio_in_query>  <ratio_in_ref>  <raw_Pvalue>  <Qvalue>  <Lfdr>
 ------------------------------------------------------------
-Author: Songtao Gui
-E-mail: songtaogui@sina.com
+
+
 ```
 
 #### PANZ_rankINT.sh
@@ -507,8 +499,8 @@ OPTIONS: ([R]:required  [O]:optional)
     --SW_test                   [O]     Out put a Shapiro-Wilk norm test result to <out>.sw_test
     --adj               <0-1>   [O]     Adjust parameter for Rank-Based Inverse Normal Transformation (default: 0.5)
 ------------------------------------------------------------
-Author: Songtao Gui
-E-mail: songtaogui@sina.com
+
+
 
 ```
 
@@ -558,8 +550,8 @@ OPTIONS: ([R]:required  [O]:optional)
 
     --force_save               [O]      Force save the permutation result rdata. The default behavior is to save only the result that passed the P-value cutoff.
 ------------------------------------------------------------
-Author: Songtao Gui
-E-mail: songtaogui@sina.com
+
+
 ```
 
 ## Citations

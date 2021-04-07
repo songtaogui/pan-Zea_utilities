@@ -1,5 +1,3 @@
-# pan-Zea-utilities
-
 - [pan-Zea-utilities](#pan-zea-utilities)
   - [Introduction](#introduction)
   - [Prerequisites](#prerequisites)
@@ -10,6 +8,7 @@
       - [PANZ_SVflankSNP_LD.sh and SV_LD_type_draw.r](#panz_svflanksnp_ldsh-and-sv_ld_type_drawr)
       - [PANZ_QTL_FineMap.sh](#panz_qtl_finemapsh)
       - [PANZ_part_h2.sh](#panz_part_h2sh)
+      - [PANZ_Rand_Variant_feature.sh](#panz_rand_variant_featuresh)
       - [PANZ_MAGMA.sh](#panz_magmash)
     - [Genomic](#genomic)
       - [PANZ_determine_core_dispensable.sh](#panz_determine_core_dispensablesh)
@@ -21,6 +20,7 @@
       - [PANZ_rankINT.sh](#panz_rankintsh)
       - [PANZ_regional_enrich.sh](#panz_regional_enrichsh)
   - [Citations](#citations)
+# pan-Zea-utilities
 
 ## Introduction
 This repository collected the miscellaneous analysis scripts used in the research of pan-Zea genome and genetics.
@@ -31,6 +31,7 @@ Genetic | `PANZ_SVflankSNP_LD.sh` | Investigate the LD level of given query vari
 Genetic | `SV_LD_type_draw.r` | Companion of `PANZ_SVflankSNP_LD.sh`. Can also be used for visualization.
 Genetic | `PANZ_QTL_FineMap.sh` | Identify QTLs from GWAS results and perform statistical fine mapping
 Genetic | `PANZ_part_h2.sh` | Partition genetic variants and calculate h2 for each part.
+Genetic | `PANZ_Rand_Variant_feature.sh` | Partition genetic variants and calculate h2 for each part.
 Genetic | `PANZ_MAGMA.sh` | Perform regional association analysis of genic regions
 Genomic | `PANZ_determine_core_dispensable.sh` | Determine if a gene is core or dispensable based on gene presence and absence matrix
 Genomic | `PANZ_SubG_PAV.sh` | Identify subgroup unblanced PAV genes
@@ -240,7 +241,7 @@ This is a wrapper of LDAK pipelines.
 Dependence: LDAK plink csvtk parallel bedtools bgzip perl5
 ------------------------------------------------------------
 USAGE:
-    bash $(basename $0) [OPTIONS]
+    bash PANZ_part_h2.sh [OPTIONS]
 
 OPTIONS: ([R]:required  [O]:optional)
     -h, --help                          show help and exit.
@@ -274,6 +275,30 @@ OPTIONS: ([R]:required  [O]:optional)
 # OTHERs
     --constrain                 [O]     By default, LDAK will not restrict heritability estimates to be within [0,1]. This is generally our preference, as to obtain unbiased estimates of heritabilities near zero, it is necessary to accept the possibility of negative estimates. Set this option will force all heritability estimates within [0,1].
 ------------------------------------------------------------
+```
+
+#### PANZ_Rand_Variant_feature.sh
+
+```sh
+------------------------------------------------------------
+Rand feature for PANZ h2 estimation
+------------------------------------------------------------
+Dependence:
+------------------------------------------------------------
+USAGE:
+    bash PANZ_Rand_Variant_feature.sh <in_feature> <rand_seed> <rand_prob>
+
+in_feature: Variant feature file in the same format as used in "PANZ_part_h2.sh":
+    FORMAT: (With header, header of Col1 must be VID, header of other cols would be used as feature tag in output. Mark excluded data with "NA"):
+            VID        Annotations     MAF_Bins
+            SNP1          CDS_SNPs     MAF0-0d05
+            SNP2   INTERGENIC_SNPS     MAF0d05-0d1
+            SNP3          CDS_SNPS     NA
+
+rand_seed: should be numeric, will output final result of "Rand[rand_seed].tsv"
+rand_prob: int from 1-10, percentage of min item number to be used as rand number, for example, if the min class has 100 items, and set rand_prob to 9 will get 100 * 9 / 10 = 90 items for each class.
+------------------------------------------------------------
+
 ```
 
 #### PANZ_MAGMA.sh
@@ -550,8 +575,6 @@ OPTIONS: ([R]:required  [O]:optional)
 
     --force_save               [O]      Force save the permutation result rdata. The default behavior is to save only the result that passed the P-value cutoff.
 ------------------------------------------------------------
-
-
 ```
 
 ## Citations

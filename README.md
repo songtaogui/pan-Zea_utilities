@@ -1,3 +1,26 @@
+# pan-Zea-utilities
+
+[![DOI](https://zenodo.org/badge/354495015.svg)](https://zenodo.org/badge/latestdoi/354495015)
+
+## Introduction
+This repository collected the miscellaneous analysis scripts used in the research of pan-Zea genome and genetics.
+
+Class | Script_name | Descriptions
+------- | ------- | -------
+Genetic | `PANZ_SVflankSNP_LD.sh` | Investigate the LD level of given query variants to nearby SNPs
+Genetic | `SV_LD_type_draw.r` | Companion of `PANZ_SVflankSNP_LD.sh`. Can also be used for visualization.
+Genetic | `PANZ_QTL_FineMap.sh` | Identify QTLs from GWAS results and perform statistical fine mapping
+Genetic | `PANZ_part_h2.sh` | Partition genetic variants and calculate h2 for each part.
+Genetic | `PANZ_Rand_Variant_feature.sh` | Partition genetic variants and calculate h2 for each part.
+Genetic | `PANZ_MAGMA.sh` | Perform regional association analysis of genic regions
+Genomic | `PANZ_determine_core_dispensable.sh` | Determine if a gene is core or dispensable based on gene presence and absence matrix
+Genomic | `PANZ_SubG_PAV.sh` | Identify subgroup unblanced PAV genes
+Genomic | `PANZ_gene_age.sh` | Calculate gene age based on sequence similarity within the species tree
+Genomic | `PANZ_SV_Annotation.sh` | Annotate SVs relative to nearby genes and TE classes
+Statistic | `PANZ_freq_enrich.sh` | Enrichment analysis given frequency stat query and ref
+Statistic | `PANZ_rankINT.sh` | Normalizing input with RankINT
+Statistic | `PANZ_regional_enrich.sh` | Genome regional enrichment analysis
+
 - [pan-Zea-utilities](#pan-zea-utilities)
   - [Introduction](#introduction)
   - [Prerequisites](#prerequisites)
@@ -20,27 +43,6 @@
       - [PANZ_rankINT.sh](#panz_rankintsh)
       - [PANZ_regional_enrich.sh](#panz_regional_enrichsh)
   - [Citations](#citations)
-# pan-Zea-utilities
-
-## Introduction
-This repository collected the miscellaneous analysis scripts used in the research of pan-Zea genome and genetics.
-
-Class | Script_name | Descriptions
-------- | ------- | -------
-Genetic | `PANZ_SVflankSNP_LD.sh` | Investigate the LD level of given query variants to nearby SNPs
-Genetic | `SV_LD_type_draw.r` | Companion of `PANZ_SVflankSNP_LD.sh`. Can also be used for visualization.
-Genetic | `PANZ_QTL_FineMap.sh` | Identify QTLs from GWAS results and perform statistical fine mapping
-Genetic | `PANZ_part_h2.sh` | Partition genetic variants and calculate h2 for each part.
-Genetic | `PANZ_Rand_Variant_feature.sh` | Partition genetic variants and calculate h2 for each part.
-Genetic | `PANZ_MAGMA.sh` | Perform regional association analysis of genic regions
-Genomic | `PANZ_determine_core_dispensable.sh` | Determine if a gene is core or dispensable based on gene presence and absence matrix
-Genomic | `PANZ_SubG_PAV.sh` | Identify subgroup unblanced PAV genes
-Genomic | `PANZ_gene_age.sh` | Calculate gene age based on sequence similarity within the species tree
-Genomic | `PANZ_SV_Annotation.sh` | Annotate SVs relative to nearby genes and TE classes
-Statistic | `PANZ_freq_enrich.sh` | Enrichment analysis given frequency stat query and ref
-Statistic | `PANZ_rankINT.sh` | Normalizing input with RankINT
-Statistic | `PANZ_regional_enrich.sh` | Genome regional enrichment analysis
-
 
 ## Prerequisites
 

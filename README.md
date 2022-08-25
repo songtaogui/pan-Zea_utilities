@@ -581,7 +581,7 @@ OPTIONS: ([R]:required  [O]:optional)
 
 ## Citations
 
-If you use this pipeline in your work, or you would like to know more details, please refer to:
+If you use these scripts in your work, or you would like to know more details, please refer to:
 
 Gui, S., Wei, W., Jiang, C. et al. [A pan-Zea genome map for enhancing maize improvement](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-022-02742-7). Genome Biol 23, 178 (2022). https://doi.org/10.1186/s13059-022-02742-7
 
